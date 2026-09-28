@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Proche de Moi — V2</title>
+<style>
+:root{--g:#08a657;--g2:#087a45;--ink:#13231c;--muted:#718078;--bg:#f5f8f6;--line:#e7eeea;--card:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
+.app{max-width:440px;margin:auto;background:#fff;min-height:100vh;box-shadow:0 0 30px #00000010}
+header{padding:16px;position:sticky;top:0;background:#fff;z-index:20;border-bottom:1px solid var(--line)}
+.top{display:flex;justify-content:space-between;align-items:center}.logo{font-weight:900;font-size:24px}.logo span{color:var(--g)}
+.loc{font-size:12px;color:var(--muted);margin-top:4px}.iconbtn{border:0;background:#f0f6f2;border-radius:12px;padding:10px;font-size:18px}
+.search{margin-top:13px;width:100%;border:0;background:#f1f5f3;border-radius:14px;padding:13px;outline:none;font-size:14px}
+main{padding:16px 16px 92px}.hero{border-radius:22px;padding:20px;color:#fff;background:linear-gradient(135deg,#078e4c,#10c96d);overflow:hidden}
+.hero h1{font-size:23px;margin:0 0 7px}.hero p{font-size:13px;margin:0;opacity:.92}.hero button{margin-top:15px;border:0;border-radius:11px;background:#fff;color:var(--g2);padding:10px 13px;font-weight:800}
+.row{display:flex;justify-content:space-between;align-items:center}h2{font-size:18px;margin:20px 0 11px}.link{color:var(--g);font-size:12px;font-weight:700}
+.cats{display:flex;gap:10px;overflow:auto;padding-bottom:3px}.cat{min-width:82px;border:1px solid var(--line);background:#fff;border-radius:16px;padding:10px 6px;text-align:center}.cat i{font-style:normal;font-size:24px;display:block}.cat span{font-size:11px;display:block;margin-top:5px}
+.card{border:1px solid var(--line);border-radius:17px;padding:11px;margin:9px 0;background:var(--card)}.shop{display:flex;gap:11px}.pic{width:68px;height:68px;border-radius:14px;background:#eaf7ef;display:grid;place-items:center;font-size:29px;flex:none}.card h3{font-size:15px;margin:1px 0 4px}.meta{font-size:11px;color:var(--muted);margin:3px 0}.tag{display:inline-block;font-size:10px;padding:4px 7px;border-radius:20px;background:#e7f8ee;color:var(--g2);margin-top:4px}.btn{border:0;background:var(--g);color:#fff;border-radius:10px;padding:9px 11px;font-weight:800;font-size:11px;margin-top:7px}.outline{background:#fff;color:var(--g);border:1px solid var(--g)}
+.product{display:flex;gap:10px;align-items:center}.prodimg{width:62px;height:62px;border-radius:13px;background:#f1f5f3;display:grid;place-items:center;font-size:27px}.price{font-weight:900;margin-top:4px}.heart{margin-left:auto;border:0;background:none;font-size:21px}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;height:70px;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:center;z-index:30}nav button{border:0;background:none;color:#718078;font-size:10px}nav button b{display:block;font-size:20px;margin-bottom:3px}nav .on{color:var(--g);font-weight:800}
+.view{display:none}.view.on{display:block}.back{border:0;background:none;font-size:26px}.detailhero{height:165px;border-radius:20px;background:#eaf7ef;display:grid;place-items:center;font-size:70px}.wa{display:block;text-align:center;background:#13b95c;color:#fff;text-decoration:none;border-radius:14px;padding:14px;font-weight:900;margin:14px 0}.pill{display:inline-block;border-radius:20px;background:#f0f6f2;padding:6px 9px;font-size:11px;margin:3px}.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat div{padding:13px;background:#f5f8f6;border-radius:13px;text-align:center}.stat strong{display:block;font-size:18px}.stat span{font-size:10px;color:var(--muted)}
+.form{border:1px solid var(--line);border-radius:16px;padding:14px}.form input,.form textarea,.form select{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;margin:5px 0 10px;font:inherit}.form label{font-size:11px;font-weight:700}
+.toast{position:fixed;bottom:82px;left:50%;transform:translateX(-50%);background:#17352a;color:#fff;padding:10px 14px;border-radius:12px;font-size:12px;display:none;z-index:50}
+</style><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#08a657"></head><body>
+<div class="app">
+<header><div class="top"><div><div class="logo">Proche <span>de Moi</span></div><div class="loc">📍 Abidjan, Côte d'Ivoire</div></div><button class="iconbtn" onclick="go('favorites')">♡</button></div><input id="search" class="search" placeholder="Rechercher un produit, service..." oninput="home()"></header>
+
+<main id="home" class="view on">
+<section class="hero"><h1>Tout ce qu'il vous faut, près de vous.</h1><p>Découvrez les commerces et services locaux, comparez et contactez-les directement.</p><button onclick="go('categories')">Explorer les catégories →</button></section>
+<div class="row"><h2>Catégories</h2><span class="link" onclick="go('categories')">Voir tout</span></div><div id="cats" class="cats"></div>
+<div class="row"><h2>À découvrir</h2><span class="link" onclick="go('shops')">Tout voir</span></div><div id="shops"></div>
+</main>
+
+<main id="categories" class="view"><div class="row"><h2>Catégories</h2></div><div id="catFull"></div></main>
+<main id="shops" class="view"><h2>Commerces</h2><div id="shopFull"></div></main>
+<main id="favorites" class="view"><h2>Mes favoris</h2><div id="fav"></div></main>
+<main id="detail" class="view"></main>
+<main id="cart" class="view"><h2>Mon panier</h2><div id="cartBox"></div></main>
+<main id="seller" class="view"><div class="row"><h2>Espace vendeur</h2><span class="pill">PROTOTYPE</span></div>
+<div class="stat"><div><strong>24</strong><span>Vues</span></div><div><strong>8</strong><span>Commandes</span></div><div><strong>4.7</strong><span>Avis</span></div></div>
+<h2>Ajouter un produit</h2><div class="form"><label>Nom du produit</label><input id="pn" placeholder="Ex : Coque iPhone"><label>Prix (F CFA)</label><input id="pp" type="number" placeholder="2500"><label>Catégorie</label><select><option>Accessoires</option><option>Mode</option><option>Alimentation</option></select><label>Description</label><textarea id="pd" placeholder="Décrivez votre produit"></textarea><button class="btn" onclick="addProduct()">Publier le produit</button></div>
+<h2>Mes dernières commandes</h2><div class="card">🧾 <b>#CMD-0024</b> · 7 500 F · <span class="tag">En préparation</span></div><div class="card">🧾 <b>#CMD-0023</b> · 4 000 F · <span class="tag">Livrée</span></div>
+</main>
+
+<nav>
+<button class="on" onclick="go('home',this)"><b>⌂</b>Accueil</button>
+<button onclick="go('categories',this)"><b>▦</b>Catégories</button>
+<button onclick="go('cart',this)"><b>🛒</b>Panier <small id="count"></small></button>
+<button onclick="go('seller',this)"><b>♙</b>Vendeur</button>
+</nav>
+<div id="toast" class="toast"></div>
+</div>
+<script>
+const cats=[['🍔','Restaurants'],['📱','Téléphones'],['💇','Coiffeurs'],['🔧','Réparateurs'],['🛍️','Boutiques'],['🏠','Services à domicile'],['🛵','Livreurs']];
+let shops=[
+{name:'Le Bon Goût',cat:'Restaurants',icon:'🍲',desc:'Cuisine ivoirienne et africaine',rating:4.5,phone:'2250700000000',products:[['Attiéké poisson',3500,'🐟'],['Poulet braisé',4000,'🍗']]},
+{name:'Phone Express',cat:'Téléphones',icon:'📱',desc:'Coques, verres, câbles et chargeurs',rating:4.7,phone:'2250700000001',products:[['Coque iPhone',2500,'📱'],['Verre trempé',1000,'🛡️'],['Câble USB-C',2500,'🔌']]},
+{name:'Style Barber',cat:'Coiffeurs',icon:'💈',desc:'Coupes hommes et soins',rating:4.6,phone:'2250700000002',products:[['Coupe classique',2000,'✂️'],['Coupe + barbe',3000,'💈']]},
+{name:'Tech Réparation',cat:'Réparateurs',icon:'🔧',desc:'Réparation smartphones et ordinateurs',rating:4.4,phone:'2250700000003',products:[['Diagnostic',2000,'🔍'],['Changement écran',15000,'📱']]}
+];
+let favorites=new Set(), cart=[];
+
+function catCard(c){return `<button class="cat" onclick="filter('${c[1]}')"><i>${c[0]}</i><span>${c[1]}</span></button>`}
+function shopCard(s){return `<div class="card shop"><div class="pic">${s.icon}</div><div style="flex:1"><h3>${s.name}</h3><div class="meta">${s.cat} · ⭐ ${s.rating}</div><div class="meta">${s.desc}</div><span class="tag">Ouvert</span><br><button class="btn" onclick="detail('${s.name}')">Voir la fiche</button><button class="btn outline" onclick="fav('${s.name}')">${favorites.has(s.name)?'♥':'♡'} Favori</button></div></div>`}
+function home(){let q=document.getElementById('search').value.toLowerCase();let a=shops.filter(s=>(s.name+s.cat+s.desc).toLowerCase().includes(q));document.getElementById('shops').innerHTML=a.map(shopCard).join('')||'<p class="meta">Aucun résultat.</p>'}
+function detail(name){let s=shops.find(x=>x.name===name);document.getElementById('detail').innerHTML=`<div class="row"><button class="back" onclick="go('home')">‹</button><button class="heart" onclick="fav('${s.name}')">${favorites.has(s.name)?'♥':'♡'}</button></div><div class="detailhero">${s.icon}</div><h1>${s.name}</h1><p class="meta">${s.cat} · ⭐ ${s.rating} · 📍 Abidjan</p><p>${s.desc}</p><a class="wa" href="https://wa.me/${s.phone}?text=Bonjour%20${encodeURIComponent(s.name)},%20je%20viens%20de%20Proche%20de%20Moi." target="_blank">💬 Contacter sur WhatsApp</a><h2>Produits / services</h2>${s.products.map(p=>`<div class="card product"><div class="prodimg">${p[2]}</div><div style="flex:1"><b>${p[0]}</b><div class="price">${p[1].toLocaleString()} F CFA</div></div><button class="btn" onclick="addCart('${s.name}','${p[0]}',${p[1]})">Ajouter</button></div>`).join('')}`;go('detail')}
+function filter(c){document.getElementById('search').value=c;go('shops');document.getElementById('shopFull').innerHTML=shops.filter(s=>s.cat===c).map(shopCard).join('')||'<p class="meta">Pas encore de commerce dans cette catégorie.</p>'}
+function fav(n){favorites.has(n)?favorites.delete(n):favorites.add(n);toast(favorites.has(n)?'Ajouté aux favoris':'Retiré des favoris');home();if(document.getElementById('favorites').classList.contains('on'))renderFav()}
+function renderFav(){let a=shops.filter(s=>favorites.has(s.name));document.getElementById('fav').innerHTML=a.length?a.map(shopCard).join(''):'<div class="empty">Aucun favori pour le moment.</div>'}
+function addCart(shop,p,price){cart.push({shop,p,price});toast('Produit ajouté au panier');document.getElementById('count').textContent=cart.length}
+function renderCart(){let el=document.getElementById('cartBox');if(!cart.length){el.innerHTML='<p class="meta">Votre panier est vide.</p>';return}let total=cart.reduce((a,x)=>a+x.price,0);el.innerHTML=cart.map((x,i)=>`<div class="card row"><div><b>${x.p}</b><div class="meta">${x.shop}</div></div><b>${x.price.toLocaleString()} F</b></div>`).join('')+`<div class="card row"><b>Total</b><b>${total.toLocaleString()} F CFA</b></div><button class="btn" style="width:100%" onclick="toast('Commande enregistrée dans le prototype')">Passer la commande</button>`}
+function addProduct(){let n=document.getElementById('pn').value,p=Number(document.getElementById('pp').value),d=document.getElementById('pd').value;if(!n||!p){toast('Remplis le nom et le prix');return}toast('Produit publié dans le prototype');document.getElementById('pn').value='';document.getElementById('pp').value='';document.getElementById('pd').value=''}
+function go(id,btn){document.querySelectorAll('.view').forEach(x=>x.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));if(btn)btn.classList.add('on');if(id==='favorites')renderFav();if(id==='cart')renderCart();if(id==='shops')document.getElementById('shopFull').innerHTML=shops.map(shopCard).join('');window.scrollTo(0,0)}
+function toast(t){let x=document.getElementById('toast');x.textContent=t;x.style.display='block';setTimeout(()=>x.style.display='none',1600)}
+document.getElementById('cats').innerHTML=cats.slice(0,6).map(catCard).join('');
+document.getElementById('catFull').innerHTML=cats.map(catCard).join('');
+home();
+</script><script>
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js");
+</script></body></html>
